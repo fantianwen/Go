@@ -1,11 +1,12 @@
 package com.study.radasm.go;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,9 +19,10 @@ import com.study.radasm.go.common.Constants;
 import java.util.ArrayList;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends ActionBarActivity {
     private static final String formatter = "%s,%s";
 
+    private Toolbar toolbar;
     private RecyclerView news_recyclerView;
 
     private MyHandler myHandler;
@@ -32,8 +34,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        toolbar= (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        toolbar= (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         myHandler = new MyHandler();
         news_recyclerView = (RecyclerView) findViewById(R.id.news_recyclerView);

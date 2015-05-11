@@ -1,7 +1,37 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="AppTheme.Base">
+
+
     </style>
+
+
+    <!-- 适用toolbar的准备条件：不需要actionbar和title这样的属性 -->
+    <style name="AppTheme.Base" parent="Theme.AppCompat">
+
+        <!-- status bar color-->
+        <item name="colorPrimaryDark">@color/primaryColor</item>
+        <!-- actionbar color-->
+        <item name="colorPrimary">@color/primary</item>
+
+        <!-- window color-->
+        <item name="android:windowBackground">@color/windowbackground</item>
+
+        <!-- 设置style为非actionbar的样式，以及window不显示title为toolbar提供条件-->
+        <item name="windowActionBar">false</item>
+
+        <item name="android:windowNoTitle">true</item>
+
+    </style>
+
+
+
+    <color name="primaryColor">#99FF6100</color>
+    <color name="primary">#FF6100</color>
+    <color name="textPrimary">#FFF</color>
+    <color name="windowbackground">#FFF</color>
+    <color name="navigationBarColor">#C0C0C0</color>
+    <color name="light_black">#77000000</color>
+    <color name="lightblack">#55000000</color>
 
 </resources>
