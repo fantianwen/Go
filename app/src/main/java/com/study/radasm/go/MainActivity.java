@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 public class MainActivity extends Activity {
     private static final String formatter = "%s,%s";
 
-    private Toolbar toolbar;
     private RecyclerView news_recyclerView;
 
     private MyHandler myHandler;
