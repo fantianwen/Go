@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="AppTheme.Base">
+        <item name="android:colorPrimaryDark">@color/primaryColor</item>
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:textColorPrimary">@color/textPrimary</item>
+        <item name="android:windowBackground">@color/windowbackground</item>
+        <item name="android:navigationBarColor">@color/navigationBarColor</item>
+
+    </style>
+
+
+    <!-- 适用toolbar的准备条件：不需要actionbar和title这样的属性 -->
+    <style name="AppTheme.Base" parent="android:Theme.Material">
+
+        <!--<item name="android:windowActionBar">false</item>-->
+        <!--<item name="android:windowNoTitle">true</item>-->
+
+    </style>
+
+
+
+    <color name="primaryColor">#99FF6100</color>
+    <color name="primary">#FF6100</color>
+    <color name="textPrimary">#FFF</color>
+    <color name="windowbackground">#FFF</color>
+    <color name="navigationBarColor">#C0C0C0</color>
+
+    <color name="light_black">#77000000</color>
+
+    <color name="lightblack">#55000000</color>
+</resources>
