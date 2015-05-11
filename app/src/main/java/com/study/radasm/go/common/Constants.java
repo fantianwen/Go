@@ -16,4 +16,8 @@ public class Constants {
 
     /**intent transfer type of date in bundle**/
     public static final String BUNDLE_URL="boudle_url";
+
+
+    public static final String[] TITLES={"新闻中心","用户中心"};
+
 }

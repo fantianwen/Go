@@ -25,7 +25,6 @@
     </style>
 
 
-
     <color name="primaryColor">#99FF6100</color>
     <color name="primary">#FF6100</color>
     <color name="textPrimary">#FFF</color>
@@ -33,5 +32,5 @@
     <color name="navigationBarColor">#C0C0C0</color>
     <color name="light_black">#77000000</color>
     <color name="lightblack">#55000000</color>
-
+    <color name="failure_gray">#232323</color>
 </resources>
