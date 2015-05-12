@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.baoyz.widget.PullRefreshLayout;
 import com.study.radasm.go.Adapters.NewsRecyclerAdapter;
 import com.study.radasm.go.Model.NewsModel;
 import com.study.radasm.go.R;
@@ -38,6 +39,7 @@ public class NewsFragment extends BaseFragment {
     }
 
     private View newsView;
+    private PullRefreshLayout swipeRefreshLayout;
     private RecyclerView news_recyclerView;
     private NewsRecyclerAdapter newsRecyclerAdapter;
     private LinearLayoutManager layoutManager;
@@ -49,6 +51,14 @@ public class NewsFragment extends BaseFragment {
         newsView = ViewUtils.inflate(mContext, R.layout.view_news);
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        swipeRefreshLayout = (PullRefreshLayout) newsView.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setRefreshStyle(PullRefreshLayout.STYLE_WATER_DROP);
+        swipeRefreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                initNewsView();
+            }
+        });
         news_recyclerView = (RecyclerView) newsView.findViewById(R.id.news_recyclerView);
         news_recyclerView.setHasFixedSize(true);
         news_recyclerView.setLayoutManager(layoutManager);
@@ -80,7 +90,7 @@ public class NewsFragment extends BaseFragment {
             newsList = (ArrayList<NewsModel>) msg.obj;
             newsRecyclerAdapter = new NewsRecyclerAdapter(mContext, newsList);
             news_recyclerView.setAdapter(newsRecyclerAdapter);
-
+            swipeRefreshLayout.setRefreshing(false);
         }
     }
 

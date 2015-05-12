@@ -6,37 +6,37 @@ package com.study.radasm.go.Model;
  * Created by RadAsm on 15/5/8.
  */
 public class NewsModel {
-    String url;
-    String content;
-    String updateTime;
+    private String url;
+    private String title;
+    private String updateTime;
 
     public NewsModel() {
     }
 
-    public NewsModel(String updateTime, String url, String content) {
+    public NewsModel(String updateTime, String url, String title) {
         this.updateTime = updateTime;
         this.url = url;
-        this.content = content;
+        this.title = title;
     }
 
-    public String getContent() {
-        return content;
+    public String getTitle() {
+        return title;
     }
 
-    public String getUrl() {
-        return url;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getUpdateTime() {
         return updateTime;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     public void setUrl(String url) {
@@ -46,7 +46,7 @@ public class NewsModel {
     @Override
     public String toString() {
         return "NewsModel{" +
-                "content='" + content + '\'' +
+                "content='" + title + '\'' +
                 ", url='" + url + '\'' +
                 ", updateTime='" + updateTime + '\'' +
                 '}';

@@ -67,7 +67,7 @@ public class HtmlUtils {
                 //we can judge that this is a weiqi news,and we add this news to the list
                 NewsModel newsModel = new NewsModel();
                 newsModel.setUrl(link.attr("abs:href"));
-                newsModel.setContent(trim(link.text(),35));
+                newsModel.setTitle(trim(link.text(),35));
 
                 newsList.add(newsModel);
             }

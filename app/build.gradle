@@ -28,4 +28,5 @@ dependencies {
     compile files('libs/jsoup-1.7.2.jar')
     compile 'com.android.support:recyclerview-v7:+'
     compile 'com.android.support:cardview-v7:+'
+    compile 'com.baoyz.pullrefreshlayout:library:1.0.1'
 }

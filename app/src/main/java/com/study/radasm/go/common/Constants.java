@@ -20,4 +20,7 @@ public class Constants {
 
     public static final String[] TITLES={"新闻中心","用户中心"};
 
+
+    public static final String NEWTABLE_NAME="newsDB.db";
+
 }

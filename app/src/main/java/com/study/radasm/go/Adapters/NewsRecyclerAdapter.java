@@ -47,9 +47,9 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         NewsViewHolder holder1= (NewsViewHolder) holder;
         final NewsModel newsModel = newsList.get(position);
-        String content = newsModel.getContent();
+        String title = newsModel.getTitle();
         String updateTime = newsModel.getUpdateTime();
-        String[] strings = content.split(" ");
+        String[] strings = title.split(" ");
         StringBuffer buffer = new StringBuffer(strings[0]);
         for(int i=1;i<strings.length;i++){
             buffer.append("\n");
