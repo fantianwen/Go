@@ -58,27 +58,48 @@ public class NewsDao {
 
     /**
      * put one news to newsDB
+     *
      * @param news the data to insert
      * @return weather the news has been inserted
      */
     public boolean saveNews2DB(NewsModel news) {
         boolean isSaved = false;
-        SQLiteDatabase newDB = null;
         SQLiteDatabase newsDB = null;
         if (newSQLiteHelper != null) {
             newsDB = newSQLiteHelper.getWritableDatabase();
         }
-        ContentValues values = new ContentValues();
-        values.put("title", news.getTitle());
-        values.put("updateTime", news.getUpdateTime());
-        values.put("url", news.getUrl());
+        /**
+         * need to check weather the item has been inth db,if it has already in,don't save it
+         */
         if (newsDB != null) {
+            ContentValues values = new ContentValues();
+            values.put("title", news.getTitle());
+            values.put("updateTime", news.getUpdateTime());
+            values.put("url", news.getUrl());
             long insert = newsDB.insert(Constants.CACHED_NEWS_TABLE_NAME, null, values);
-            if(insert!=-1){
-                isSaved=true;
+            if (insert != -1) {
+                isSaved = true;
             }
         }
         //row ID of the newly inserted row, or -1 if an error occurred
         return isSaved;
     }
+
+    /**
+     * delete all the data from newsDB
+     * @return
+     */
+    public int deleteNewsDB(){
+        int delete=0;
+        SQLiteDatabase newsDB = null;
+        if (newSQLiteHelper != null) {
+            newsDB = newSQLiteHelper.getWritableDatabase();
+        }
+        if (newsDB != null) {
+            delete = newsDB.delete(Constants.CACHED_NEWS_TABLE_NAME, null, null);
+        }
+        return delete;
+    }
+
+
 }

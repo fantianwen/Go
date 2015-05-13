@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.baoyz.widget.PullRefreshLayout;
@@ -30,7 +31,6 @@ public class NewsFragment extends BaseFragment {
     private NewsFragment() {
 
     }
-
     public static NewsFragment getInstance() {
         if (mNewsFragment == null) {
             synchronized (NewsFragment.class) {
@@ -56,6 +56,8 @@ public class NewsFragment extends BaseFragment {
 
     @Override
     protected View loadingSuccessView() {
+
+
         newsDao=new NewsDao(mContext);
         sp=mContext.getSharedPreferences(Constants.CONFIG, Context.MODE_PRIVATE);
         is_newsList_cached = sp.getBoolean(Constants.IS_HASCACHE, false);
@@ -85,9 +87,13 @@ public class NewsFragment extends BaseFragment {
          *      first,show data from newDB;
          *      once someone pulledto refresh,we got data from net and cache it.
          */
+        Log.e("is_newsList_cached",is_newsList_cached+"");
         if(is_newsList_cached){
             //have cache
             cachedNewsList=newsDao.getNewsListFromDB();
+           // NewsModel hahah = cachedNewsList.get(1);
+           // boolean b = newsDao.checkItem(hahah);
+          //  Log.e("haha",b+"");
             newsRecyclerAdapter = new NewsRecyclerAdapter(mContext, cachedNewsList);
             news_recyclerView.setAdapter(newsRecyclerAdapter);
         }else{
@@ -113,7 +119,9 @@ public class NewsFragment extends BaseFragment {
         @Override
         public void handleMessage(Message msg) {
             newsList = (ArrayList<NewsModel>) msg.obj;
-            //put the first 20 news-items to newsDB
+            int i1 = newsDao.deleteNewsDB();
+            Log.e("newsDB中删除的行数",i1+"");
+            //put the first 15 news-items to newsDB
             for(int i=0;i<15;i++){
                 NewsModel newsModel=newsList.get(i);
                 boolean isThisNews_saved = newsDao.saveNews2DB(newsModel);
