@@ -37,14 +37,14 @@ public class NewsDao {
      * @return
      */
     public ArrayList<NewsModel> getNewsListFromDB() {
-        ArrayList<NewsModel> newsList = null;
+        ArrayList<NewsModel> newsList = new ArrayList<NewsModel>();
         SQLiteDatabase newsDB = null;
         Cursor newsQuery = null;
         if (newSQLiteHelper != null) {
             newsDB = newSQLiteHelper.getReadableDatabase();
         }
         if (newsDB != null) {
-            newsQuery = newsDB.query(Constants.NEWTABLE_NAME, null, null, null, null, null, null);
+            newsQuery = newsDB.query(Constants.CACHED_NEWS_TABLE_NAME, null, null, null, null, null, null);
         }
         while (newsQuery.moveToNext()) {
             String title = newsQuery.getString(newsQuery.getColumnIndex("title"));
@@ -73,7 +73,7 @@ public class NewsDao {
         values.put("updateTime", news.getUpdateTime());
         values.put("url", news.getUrl());
         if (newsDB != null) {
-            long insert = newsDB.insert(Constants.NEWTABLE_NAME, null, values);
+            long insert = newsDB.insert(Constants.CACHED_NEWS_TABLE_NAME, null, values);
             if(insert!=-1){
                 isSaved=true;
             }

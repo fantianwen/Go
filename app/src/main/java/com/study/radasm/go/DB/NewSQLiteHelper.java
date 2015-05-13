@@ -13,7 +13,7 @@ public class NewSQLiteHelper extends SQLiteOpenHelper{
 
     private static final int NEWSDB_VERSION=1;
 
-    private static final String CREATE_NEWS="create table news(id integer primary key autoincrement,title text,updateTime text url text)";
+    private static final String CREATE_NEWS="create table "+Constants.CACHED_NEWS_TABLE_NAME+"(id integer primary key autoincrement,title text,updateTime text,url text)";
 
     public NewSQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -24,7 +24,7 @@ public class NewSQLiteHelper extends SQLiteOpenHelper{
      * @param context
      */
     public NewSQLiteHelper(Context context){
-        this(context, Constants.NEWTABLE_NAME, null, NEWSDB_VERSION);
+        this(context, Constants.NEWSDB_NAME, null, NEWSDB_VERSION);
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
