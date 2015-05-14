@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="type1">
+        <enum name="circle" value="0"/>
+        <enum name="round" value="1"/>
+    </attr>
+
+    <attr name="borderRadius" format="dimension" />
+
+    <attr name="src" format="reference"/>
+
+    <declare-styleable name="CircleView">
+
+        <attr name="type1"/>
+        <attr name="borderRadius"/>
+        <attr name="src"/>
+
+    </declare-styleable>
+
+
+
+</resources>

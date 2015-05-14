@@ -31,6 +31,7 @@ public class NewsFragment extends BaseFragment {
     private NewsFragment() {
 
     }
+
     public static NewsFragment getInstance() {
         if (mNewsFragment == null) {
             synchronized (NewsFragment.class) {
@@ -58,11 +59,11 @@ public class NewsFragment extends BaseFragment {
     protected View loadingSuccessView() {
 
 
-        newsDao=new NewsDao(mContext);
-        sp=mContext.getSharedPreferences(Constants.CONFIG, Context.MODE_PRIVATE);
+        newsDao = new NewsDao(mContext);
+        sp = mContext.getSharedPreferences(Constants.CONFIG, Context.MODE_PRIVATE);
         is_newsList_cached = sp.getBoolean(Constants.IS_HASCACHE, false);
 
-        cachedNewsList =new ArrayList<NewsModel>();
+        cachedNewsList = new ArrayList<NewsModel>();
         newsView = ViewUtils.inflate(mContext, R.layout.view_news);
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -77,6 +78,8 @@ public class NewsFragment extends BaseFragment {
         news_recyclerView = (RecyclerView) newsView.findViewById(R.id.news_recyclerView);
         news_recyclerView.setHasFixedSize(true);
         news_recyclerView.setLayoutManager(layoutManager);
+        news_recyclerView.setOnScrollListener(new MyRecyclerViewScrollListener());
+
         return newsView;
     }
 
@@ -87,16 +90,16 @@ public class NewsFragment extends BaseFragment {
          *      first,show data from newDB;
          *      once someone pulledto refresh,we got data from net and cache it.
          */
-        Log.e("is_newsList_cached",is_newsList_cached+"");
-        if(is_newsList_cached){
+        Log.e("is_newsList_cached", is_newsList_cached + "");
+        if (is_newsList_cached) {
             //have cache
-            cachedNewsList=newsDao.getNewsListFromDB();
-           // NewsModel hahah = cachedNewsList.get(1);
-           // boolean b = newsDao.checkItem(hahah);
-          //  Log.e("haha",b+"");
+            cachedNewsList = newsDao.getNewsListFromDB();
+            // NewsModel hahah = cachedNewsList.get(1);
+            // boolean b = newsDao.checkItem(hahah);
+            //  Log.e("haha",b+"");
             newsRecyclerAdapter = new NewsRecyclerAdapter(mContext, cachedNewsList);
             news_recyclerView.setAdapter(newsRecyclerAdapter);
-        }else{
+        } else {
             initNewsView();
         }
         super.onActivityCreated(savedInstanceState);
@@ -120,14 +123,14 @@ public class NewsFragment extends BaseFragment {
         public void handleMessage(Message msg) {
             newsList = (ArrayList<NewsModel>) msg.obj;
             int i1 = newsDao.deleteNewsDB();
-            Log.e("newsDB中删除的行数",i1+"");
+            Log.e("newsDB中删除的行数", i1 + "");
             //put the first 15 news-items to newsDB
-            for(int i=0;i<15;i++){
-                NewsModel newsModel=newsList.get(i);
+            for (int i = 0; i < 15; i++) {
+                NewsModel newsModel = newsList.get(i);
                 boolean isThisNews_saved = newsDao.saveNews2DB(newsModel);
-                LogUtils.e(newsModel.getTitle(),isThisNews_saved+"");
+                LogUtils.e(newsModel.getTitle(), isThisNews_saved + "");
             }
-            is_newsList_cached=true;
+            is_newsList_cached = true;
             sp.edit().putBoolean(Constants.IS_HASCACHE, is_newsList_cached).commit();
             newsRecyclerAdapter = new NewsRecyclerAdapter(mContext, newsList);
             news_recyclerView.setAdapter(newsRecyclerAdapter);
@@ -135,4 +138,16 @@ public class NewsFragment extends BaseFragment {
         }
     }
 
+    private class MyRecyclerViewScrollListener extends RecyclerView.OnScrollListener {
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+            int itemCount = layoutManager.getItemCount();
+            if (lastVisibleItemPosition >= itemCount - 2 && dy > 0) {
+                //自动加载更多  15个15个的加载
+            }
+
+        }
+    }
 }

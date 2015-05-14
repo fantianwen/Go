@@ -1,11 +1,13 @@
 package com.study.radasm.go.Model;
 
+import java.io.Serializable;
+
 /**
  * this model is used for save date parsed from html(weiqi news)
  *
  * Created by RadAsm on 15/5/8.
  */
-public class NewsModel {
+public class NewsModel implements Serializable{
     private String url;
     private String title;
     private String updateTime;
