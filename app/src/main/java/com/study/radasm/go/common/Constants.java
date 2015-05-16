@@ -29,4 +29,6 @@ public class Constants {
     public static final String IS_HASCACHE = "is_newsList_cached";
 
     public static final String CONFIG = "config";
+
+    public static final String IS_LOGGED="is_logged";
 }

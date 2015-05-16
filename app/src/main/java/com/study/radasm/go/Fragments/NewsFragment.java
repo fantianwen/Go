@@ -94,9 +94,6 @@ public class NewsFragment extends BaseFragment {
         if (is_newsList_cached) {
             //have cache
             cachedNewsList = newsDao.getNewsListFromDB();
-            // NewsModel hahah = cachedNewsList.get(1);
-            // boolean b = newsDao.checkItem(hahah);
-            //  Log.e("haha",b+"");
             newsRecyclerAdapter = new NewsRecyclerAdapter(mContext, cachedNewsList);
             news_recyclerView.setAdapter(newsRecyclerAdapter);
         } else {
