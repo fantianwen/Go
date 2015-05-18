@@ -33,4 +33,6 @@
     <color name="light_black">#77000000</color>
     <color name="lightblack">#55000000</color>
     <color name="failure_gray">#232323</color>
+
+    <color name="light_orange">#66EE5500</color>
 </resources>

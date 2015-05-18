@@ -3,8 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="?android:colorPrimary"
+    android:weightSum="1"
+    android:background="@color/light_orange"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_purple"
+        android:text="请检查用户名和密码的合法性"/>
 
     <EditText
         android:id="@+id/username"
@@ -45,6 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:onClick="login"
+            android:textColor="@color/primaryColor"
             android:text="登录" />
 
         <Button
@@ -52,7 +61,28 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:onClick="regist"
+            android:textColor="@color/primaryColor"
             android:text="注册" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_weight="0.4"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/logging_by_weibo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="新浪微博"
+            android:drawablePadding="10dp"
+            android:drawableTop="@mipmap/find_friend_icon_weibo"/>
+
 
 
     </LinearLayout>

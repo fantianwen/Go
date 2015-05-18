@@ -9,9 +9,12 @@ import com.study.radasm.go.Utils.TextUtils;
  */
 public class TextUtilsTestDemo extends InstrumentationTestCase {
 
+    /**
+     * test for TextUtils
+     */
     public void test(){
-        boolean empty = TextUtils.isNotEmpty("11", null, "11");
-        assertEquals(empty,false);
+        boolean empty = TextUtils.isNotEmpty("");
+        assertEquals(empty,true);
     }
 
 

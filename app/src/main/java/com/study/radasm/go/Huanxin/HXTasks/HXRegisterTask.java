@@ -47,7 +47,7 @@ public class HXRegisterTask implements Runnable {
             json.put("password", password);
             json.put("nicakname",nickname);
             String encoderJson = URLEncoder.encode(json.toString(), HTTP.UTF_8);
-            String url = HXConstants.BASE_URL;
+            String url = HXConstants.BASE_URL+HXConstants.REGISTER;
             responseResult = HttpClientManager.sendHttpRequest(url, (Map) null, json.toString(), HttpClientManager.Method_POST);
 
             hxCallback.getResponseJson(responseResult);

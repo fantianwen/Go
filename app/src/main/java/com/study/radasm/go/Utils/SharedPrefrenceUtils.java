@@ -23,4 +23,13 @@ public class SharedPrefrenceUtils {
         return flag;
     }
 
+//    /**
+//     * 将一个Object保存在sp中
+//     * @param sinaToken
+//     * @param obj
+//     */
+//    public void saveObject(String sinaToken, Object obj) {
+//        sp.edit().put
+//
+//    }
 }

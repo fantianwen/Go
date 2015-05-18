@@ -18,6 +18,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 dependencies {
@@ -31,4 +37,5 @@ dependencies {
     compile 'com.android.support:cardview-v7:+'
     compile 'com.baoyz.pullrefreshlayout:library:1.0.1'
     compile files('libs/easemobchat_2.1.8.jar')
+    compile files('libs/weibosdkcore_v3.0.1.jar')
 }

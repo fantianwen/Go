@@ -4,6 +4,11 @@ package com.study.radasm.go.Utils;
  * Created by RadAsm on 15/5/16.
  */
 public class TextUtils {
+    /**
+     * judge weather args are all not empty("" or null)
+     * @param args
+     * @return
+     */
     public static boolean isNotEmpty(String... args) {
         boolean flag = true;
         int count=args.length;
