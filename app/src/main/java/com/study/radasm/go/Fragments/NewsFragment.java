@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public class NewsFragment extends BaseFragment {
     private static NewsFragment mNewsFragment;
 
-    private NewsFragment() {
+    public NewsFragment() {
 
     }
 

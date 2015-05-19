@@ -28,11 +28,11 @@ import org.json.JSONObject;
 public class User {
 
     /** 用户UID（int64） */
-    public String id;
+    public String id;                //use
     /** 字符串型的用户 UID */
     public String idstr;
     /** 用户昵称 */
-    public String screen_name;
+    public String screen_name;      //use
     /** 友好显示名称 */
     public String name;
     /** 用户所在省级ID */
@@ -40,20 +40,20 @@ public class User {
     /** 用户所在城市ID */
     public int city;
     /** 用户所在地 */
-    public String location;
+    public String location;        //user
     /** 用户个人描述 */
-    public String description;
+    public String description;     //use
     /** 用户博客地址 */
     public String url;
     /** 用户头像地址，50×50像素 */
-    public String profile_image_url;
+    public String profile_image_url;              //use
     /** 用户的微博统一URL地址 */
     public String profile_url;
     /** 用户的个性化域名 */
     public String domain;
     /** 用户的微号 */
     public String weihao;
-    /** 性别，m：男、f：女、n：未知 */
+    /** 性别，m：男、f：女、n：未知 */        //use
     public String gender;
     /** 粉丝数 */
     public int followers_count;
@@ -101,6 +101,29 @@ public class User {
     public String mbtype;
     public String mbrank;
     public String block_word;
+
+    public User(){
+
+    }
+
+
+    /**
+     * 为了展示朋友圈而设置的构造方法，只挑选几个成员属性进行展示
+     * @param id
+     * @param screen_name
+     * @param location
+     * @param description
+     * @param profile_image_url
+     * @param gender
+     */
+    public User(String id,String screen_name,String location,String description,String profile_image_url,String gender){
+        this.id=id;
+        this.screen_name=screen_name;
+        this.location=location;
+        this.description=description;
+        this.profile_image_url=profile_image_url;
+        this.gender=gender;
+    }
     
     public static User parse(String jsonString) {
         try {

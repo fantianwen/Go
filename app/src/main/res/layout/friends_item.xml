@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/user_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/userImage"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        fresco:placeholderImage="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="7sp"
+        android:layout_toEndOf="@+id/userImage"
+        android:layout_toRightOf="@+id/userImage"
+        android:singleLine="true"
+        android:text="username"
+        android:textSize="40sp" />
+
+
+    <TextView
+        android:id="@+id/user_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/userImage"
+        android:layout_alignLeft="@+id/username"
+        android:layout_alignStart="@+id/username"
+        android:layout_marginTop="10dp"
+        android:singleLine="true"
+        android:text="user_des"
+        android:textColor="@color/user_des_color"
+        android:textSize="20sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignBottom="@+id/user_des"
+        android:layout_below="@+id/userImage"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/userImage"
+        android:layout_toRightOf="@+id/userImage" />
+
+</RelativeLayout>

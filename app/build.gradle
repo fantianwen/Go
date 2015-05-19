@@ -38,4 +38,6 @@ dependencies {
     compile 'com.baoyz.pullrefreshlayout:library:1.0.1'
     compile files('libs/easemobchat_2.1.8.jar')
     compile files('libs/weibosdkcore_v3.0.1.jar')
+    compile 'com.facebook.fresco:fresco:0.5.0+'
+
 }

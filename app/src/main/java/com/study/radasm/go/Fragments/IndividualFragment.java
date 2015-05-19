@@ -16,7 +16,7 @@ import com.study.radasm.go.common.Constants;
  */
 public class IndividualFragment extends BaseFragment{
     private static IndividualFragment mIndividualFragment;
-    private IndividualFragment(){
+    public IndividualFragment(){
 
     }
     public static IndividualFragment getInstance(){

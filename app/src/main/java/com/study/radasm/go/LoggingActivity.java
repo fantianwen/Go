@@ -19,6 +19,8 @@ import com.study.radasm.go.Huanxin.HXTasks.HXRegisterTask;
 import com.study.radasm.go.Sina.AccessTokenKeeper;
 import com.study.radasm.go.Sina.Constants;
 import com.study.radasm.go.Sina.WeiboUser;
+import com.study.radasm.go.Sina.openapi.UsersAPI;
+import com.study.radasm.go.Sina.openapi.legacy.GroupAPI;
 import com.study.radasm.go.Sina.openapi.models.User;
 import com.study.radasm.go.Utils.SharedPrefrenceUtils;
 import com.study.radasm.go.Utils.TextUtils;
@@ -27,7 +29,7 @@ import com.study.radasm.go.Utils.TextUtils;
  * Created by RadAsm on 15/5/15.
  */
 public class LoggingActivity extends BaseActivity {
-    private static final String TAG=LoggingActivity.class.getSimpleName();
+    private static final String TAG = LoggingActivity.class.getSimpleName();
 
     private TextView check;
     private TextView logging_by_weibo;
@@ -45,31 +47,69 @@ public class LoggingActivity extends BaseActivity {
 
     private SharedPrefrenceUtils spUtils;
     private SsoHandler ssoHandler;
+    private UsersAPI usersAPI;
+    private GroupAPI groupAPI;
+
 
     /**
-     *这里的回调是在inActiveResult之中才会运行的，在这里，我们做一些其他的事情。
+     * 这里的回调是在inActiveResult之中才会运行的，在这里，我们做一些其他的事情。
      */
-    private class GoWeiboAuthListener implements WeiboAuthListener{
+    private class GoWeiboAuthListener implements WeiboAuthListener {
+
 
         @Override
         public void onComplete(Bundle values) {
-            Oauth2AccessToken mAccessToken = Oauth2AccessToken.parseAccessToken(values);// 从 Bundle 中解析 Token
+            final Oauth2AccessToken mAccessToken = Oauth2AccessToken.parseAccessToken(values);// 从 Bundle 中解析 Token
             if (mAccessToken.isSessionValid()) {
+
+                /**获取当前登陆用户的好友分组*/
+                /**
+                 * 此接口sina的Sso方式暂不支持，残念(需要申请)
+                 */
+                groupAPI = new GroupAPI(LoggingActivity.this, Constants.APP_KEY, mAccessToken);
+                groupAPI.groups(new RequestListener() {
+                    @Override
+                    public void onComplete(String s) {
+                        Log.e("groups", s);
+                    }
+
+                    @Override
+                    public void onWeiboException(WeiboException e) {
+                        Log.e("groupException:",e.getMessage());
+
+                    }
+                });
+
+
                 Log.e(TAG, mAccessToken.toString());
                 //将token信息保存在sharedPrefrence中
-                AccessTokenKeeper.writeAccessToken(LoggingActivity.this,mAccessToken);
+                AccessTokenKeeper.writeAccessToken(LoggingActivity.this, mAccessToken);
 
                 //user api 取得该用户的用户名
                 WeiboUser.getUserName(LoggingActivity.this, new RequestListener() {
                     @Override
                     public void onComplete(String response) {
-                        Log.e(TAG,"成功获取到用户的信息为："+response);
+                        Log.e(TAG, "成功获取到用户的信息为：" + response);
                         // 调用 User#parse 将JSON串解析成User对象
                         User user = User.parse(response);
                         if (user != null) {
                             Toast.makeText(LoggingActivity.this,
                                     "获取User信息成功，用户昵称：" + user.screen_name,
                                     Toast.LENGTH_LONG).show();
+
+
+
+
+
+                            /**
+                             * 成功获取用户信息成功后，跳转FriendsActivity中
+                             */
+                            //Bundle userBundle=UserKeeper.write2Bundle(user);
+
+                            //  AppUtils.transfer2Activity(userBundle, LoggingActivity.this, FriendsActivity.class);
+                            //LoggingActivity.this.finish();
+
+
                         } else {
                             Toast.makeText(LoggingActivity.this, response, Toast.LENGTH_LONG).show();
                         }
@@ -77,27 +117,31 @@ public class LoggingActivity extends BaseActivity {
 
                     @Override
                     public void onWeiboException(WeiboException e) {
-                        Log.e(TAG,"获取用户信息出错，出错信息为："+e.getMessage());
+                        Log.e(TAG, "获取用户信息出错，出错信息为：" + e.getMessage());
                     }
                 });
+
+
+
+
 
 
             } else {
                 // 当您注册的应用程序签名不正确时,就会收到错误Code,请确保签名正确
                 String code = values.getString("code", "");
-                Log.e(TAG,"返回token错误，错误信息："+code);
+                Log.e(TAG, "返回token错误，错误信息：" + code);
             }
         }
 
         @Override
         public void onWeiboException(WeiboException e) {
-            Log.e(TAG,"auth-Exception"+e.getMessage());
+            Log.e(TAG, "auth-Exception" + e.getMessage());
 
         }
 
         @Override
         public void onCancel() {
-            Log.e(TAG,"授权取消");
+            Log.e(TAG, "授权取消");
 
         }
     }
@@ -109,17 +153,17 @@ public class LoggingActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        goWeiboAuthListener=new GoWeiboAuthListener();
-        check= (TextView) findViewById(R.id.check);
-        logging_by_weibo= (TextView) findViewById(R.id.logging_by_weibo);
+        goWeiboAuthListener = new GoWeiboAuthListener();
+        check = (TextView) findViewById(R.id.check);
+        logging_by_weibo = (TextView) findViewById(R.id.logging_by_weibo);
 
         et_username = (EditText) findViewById(R.id.username);
         et_password = (EditText) findViewById(R.id.password);
-        et_nickname= (EditText) findViewById(R.id.nickname);
+        et_nickname = (EditText) findViewById(R.id.nickname);
         check.setVisibility(View.GONE);
 
 
-        spUtils=new SharedPrefrenceUtils(this, com.study.radasm.go.common.Constants.CONFIG);
+        spUtils = new SharedPrefrenceUtils(this, com.study.radasm.go.common.Constants.CONFIG);
 
         et_username.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +195,7 @@ public class LoggingActivity extends BaseActivity {
 
     /**
      * 一定要这句话，才能将token的信息获取到
+     *
      * @param requestCode
      * @param resultCode
      * @param data
@@ -163,9 +208,6 @@ public class LoggingActivity extends BaseActivity {
         }
 
 
-
-
-
     }
 
     @Override
@@ -173,21 +215,21 @@ public class LoggingActivity extends BaseActivity {
 
     }
 
-    public void login(View view){
+    public void login(View view) {
 
     }
 
-    public void regist(View view){
+    public void regist(View view) {
         username = et_username.getText().toString().trim();
         password = et_password.getText().toString().trim();
-        nickname=et_nickname.getText().toString().trim();
+        nickname = et_nickname.getText().toString().trim();
 
-        Log.e(TAG,username+":"+password);
+        Log.e(TAG, username + ":" + password);
         //first to check,当然，这里的用户名和密码要合乎环信的命名规范，这点要检查，但是这里省去检查了
         boolean isLegal = TextUtils.isNotEmpty(username, password);
-        if(isLegal){
+        if (isLegal) {
             registInHuanxin();
-        }else{
+        } else {
             //用户名或者密码不合法，提示用户
             check.setVisibility(View.VISIBLE);
             et_username.setText("");
@@ -195,9 +237,9 @@ public class LoggingActivity extends BaseActivity {
         }
     }
 
-    private void registInHuanxin(){
+    private void registInHuanxin() {
         //register directly,to analasys the result
-        hxRegisterTask = new HXRegisterTask(username, password,nickname, new HXCallback() {
+        hxRegisterTask = new HXRegisterTask(username, password, nickname, new HXCallback() {
             @Override
             public void getResponseJson(String responseJson) {
                 Log.e("HXresult", responseJson);
@@ -205,10 +247,10 @@ public class LoggingActivity extends BaseActivity {
                 /**
                  * 如果返回的json串只有“error”,就做出相应的提示，否则注册成功，直接携带数据跳转
                  */
-                if(responseJson.contains("error")){
+                if (responseJson.contains("error")) {
                     check.setText("用户名重复！");
                     check.setVisibility(View.VISIBLE);
-                }else{
+                } else {
 
                 }
 
