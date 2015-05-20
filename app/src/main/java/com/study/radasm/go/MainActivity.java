@@ -1,16 +1,21 @@
 package com.study.radasm.go;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.study.radasm.go.Adapters.MainViewPagerAdapter;
+import com.study.radasm.go.Fragments.SuperAwesomeCardFragment;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -20,6 +25,7 @@ public class MainActivity extends ActionBarActivity {
     private DrawerLayout main_drawerlayout;
 
     private ViewPager viewPager;
+    private PagerTabStrip pager_tab_strip;
     private MainViewPagerAdapter viewPagerAdapter;
     private ActionBar supportActionBar;
     private ActionBarDrawerToggle drawerToggle;
@@ -34,9 +40,56 @@ public class MainActivity extends ActionBarActivity {
 
         initDrawerLayout();
 
+        pager_tab_strip = (PagerTabStrip) findViewById(R.id.pager_tab_strip);
+
         viewPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager(), this);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
+
+        usePlette2ViewPager();
+
         viewPager.setAdapter(viewPagerAdapter);
+
+    }
+
+    private void usePlette2ViewPager() {
+
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                colorChange(position);
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    /**
+     * 使用palette去变换viewpager中每个页面的颜色
+     */
+    private void colorChange(int position) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), SuperAwesomeCardFragment.getBackgroundBitmapPosition(position));
+
+        /**
+         * Palette是使用builder进行产生的，并且应该总是运行在后台线程中，palette允许和bitmap之间两种关联方式：同步和异步
+         */
+        Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
+            @Override
+            public void onGenerated(Palette palette) {
+                Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
+                int rgb = vibrantSwatch.getRgb();
+                pager_tab_strip.setBackgroundColor(rgb);
+
+            }
+        });
 
     }
 
