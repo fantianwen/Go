@@ -5,4 +5,6 @@
     <string name="action_settings">Settings</string>
     <string name="action_search">搜索</string>
     <string name="friends">朋友圈</string>
+    <string name="drawer_open">open_drawer</string>
+    <string name="drawer_close">close_drawer</string>
 </resources>
