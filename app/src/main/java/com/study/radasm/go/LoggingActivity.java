@@ -8,20 +8,25 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.sina.weibo.sdk.auth.AuthInfo;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
 import com.sina.weibo.sdk.net.RequestListener;
+import com.study.radasm.go.DB.WBUserSQLiteHelper;
+import com.study.radasm.go.Dao.WeiboUserDao;
 import com.study.radasm.go.Huanxin.HXCallback;
 import com.study.radasm.go.Huanxin.HXTasks.HXRegisterTask;
 import com.study.radasm.go.Sina.AccessTokenKeeper;
 import com.study.radasm.go.Sina.Constants;
+import com.study.radasm.go.Sina.Fans;
 import com.study.radasm.go.Sina.WeiboUser;
-import com.study.radasm.go.Sina.openapi.UsersAPI;
-import com.study.radasm.go.Sina.openapi.legacy.GroupAPI;
+import com.study.radasm.go.Sina.openapi.legacy.FriendshipsAPI;
 import com.study.radasm.go.Sina.openapi.models.User;
+import com.study.radasm.go.Utils.AppUtils;
+import com.study.radasm.go.Utils.LogUtils;
 import com.study.radasm.go.Utils.SharedPrefrenceUtils;
 import com.study.radasm.go.Utils.TextUtils;
 
@@ -44,12 +49,12 @@ public class LoggingActivity extends BaseActivity {
 
     private HXRegisterTask hxRegisterTask;
     private GoWeiboAuthListener goWeiboAuthListener;
+    private FriendshipsAPI friendshipsAPI;
 
     private SharedPrefrenceUtils spUtils;
     private SsoHandler ssoHandler;
-    private UsersAPI usersAPI;
-    private GroupAPI groupAPI;
 
+    private WeiboUserDao weiboUserDao;
 
     /**
      * 这里的回调是在inActiveResult之中才会运行的，在这里，我们做一些其他的事情。
@@ -62,24 +67,23 @@ public class LoggingActivity extends BaseActivity {
             final Oauth2AccessToken mAccessToken = Oauth2AccessToken.parseAccessToken(values);// 从 Bundle 中解析 Token
             if (mAccessToken.isSessionValid()) {
 
-                /**获取当前登陆用户的好友分组*/
-                /**
-                 * 此接口sina的Sso方式暂不支持，残念(需要申请)
-                 */
-                groupAPI = new GroupAPI(LoggingActivity.this, Constants.APP_KEY, mAccessToken);
-                groupAPI.groups(new RequestListener() {
-                    @Override
-                    public void onComplete(String s) {
-                        Log.e("groups", s);
-                    }
-
-                    @Override
-                    public void onWeiboException(WeiboException e) {
-                        Log.e("groupException:",e.getMessage());
-
-                    }
-                });
-
+//                /**获取当前登陆用户的好友分组*/
+//                /**
+//                 * 此接口sina的Sso方式暂不支持，残念(需要申请)
+//                 */
+//                groupAPI = new GroupAPI(LoggingActivity.this, Constants.APP_KEY, mAccessToken);
+//                groupAPI.groups(new RequestListener() {
+//                    @Override
+//                    public void onComplete(String s) {
+//                        Log.e("groups", s);
+//                    }
+//
+//                    @Override
+//                    public void onWeiboException(WeiboException e) {
+//                        Log.e("groupException:",e.getMessage());
+//
+//                    }
+//                });
 
                 Log.e(TAG, mAccessToken.toString());
                 //将token信息保存在sharedPrefrence中
@@ -97,19 +101,35 @@ public class LoggingActivity extends BaseActivity {
                                     "获取User信息成功，用户昵称：" + user.screen_name,
                                     Toast.LENGTH_LONG).show();
 
-
-
-
-
                             /**
-                             * 成功获取用户信息成功后，跳转FriendsActivity中
+                             * 获取到用户的uid列表。（默认只能获取到用户总粉丝数的30%）
                              */
-                            //Bundle userBundle=UserKeeper.write2Bundle(user);
+                            String screen_name = user.screen_name;
+                            Oauth2AccessToken accessToken = AccessTokenKeeper.readAccessToken(LoggingActivity.this);
+                            friendshipsAPI = new FriendshipsAPI(LoggingActivity.this, Constants.APP_KEY, accessToken);
+                            friendshipsAPI.followers(screen_name, 200, 0, false, new RequestListener() {
+                                @Override
+                                public void onComplete(String s) {
+                                    LogUtils.delete();
+                                    LogUtils.keep(s);
 
-                            //  AppUtils.transfer2Activity(userBundle, LoggingActivity.this, FriendsActivity.class);
-                            //LoggingActivity.this.finish();
+                                    Fans fans = new Gson().fromJson(s, Fans.class);
+                                    Log.e(TAG,fans.toString());
 
 
+
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString(com.study.radasm.go.common.Constants.FANS,s);
+                                    AppUtils.transfer2Activity(bundle, LoggingActivity.this, FriendsActivity.class);
+                                    LoggingActivity.this.finish();
+                                }
+
+                                @Override
+                                public void onWeiboException(WeiboException e) {
+                                    Log.e(TAG,e.getMessage());
+
+                                }
+                            });
                         } else {
                             Toast.makeText(LoggingActivity.this, response, Toast.LENGTH_LONG).show();
                         }
@@ -120,12 +140,6 @@ public class LoggingActivity extends BaseActivity {
                         Log.e(TAG, "获取用户信息出错，出错信息为：" + e.getMessage());
                     }
                 });
-
-
-
-
-
-
             } else {
                 // 当您注册的应用程序签名不正确时,就会收到错误Code,请确保签名正确
                 String code = values.getString("code", "");
@@ -153,6 +167,7 @@ public class LoggingActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        weiboUserDao = new WeiboUserDao(this, new WBUserSQLiteHelper(this));
         goWeiboAuthListener = new GoWeiboAuthListener();
         check = (TextView) findViewById(R.id.check);
         logging_by_weibo = (TextView) findViewById(R.id.logging_by_weibo);

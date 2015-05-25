@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.study.radasm.go.R;
-import com.study.radasm.go.Sina.openapi.models.User;
 
 import java.util.ArrayList;
 
@@ -30,13 +29,12 @@ public class FriendsRecycleAdapter extends RecyclerView.Adapter {
 
 
     private Context context;
-    private ArrayList<User> friendsList;
+    private ArrayList<com.study.radasm.go.Sina.User> friendsList;
 
-    public FriendsRecycleAdapter(Context context, ArrayList<User> friendsList) {
+    public FriendsRecycleAdapter(Context context, ArrayList<com.study.radasm.go.Sina.User> friendsList) {
         this.context = context;
         this.friendsList = friendsList;
     }
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -50,7 +48,7 @@ public class FriendsRecycleAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         FriendsViewHolder holder1 = (FriendsViewHolder) holder;
-        final User user = friendsList.get(position);
+        final com.study.radasm.go.Sina.User user = friendsList.get(position);
         String userImageUri = user.profile_image_url;
         String user_name = user.screen_name;
         String user_desc = user.description;
@@ -72,20 +70,12 @@ public class FriendsRecycleAdapter extends RecyclerView.Adapter {
 
             }
         });
-
     }
-
     @Override
     public int getItemCount() {
         return friendsList.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-
-
-        return 1;
-    }
 
     private static class FriendsViewHolder extends RecyclerView.ViewHolder {
         public RelativeLayout user_container;

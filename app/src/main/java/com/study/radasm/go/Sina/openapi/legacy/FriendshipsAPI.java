@@ -161,7 +161,7 @@ public class FriendshipsAPI extends AbsOpenAPI {
     }
 
     /**
-     * 获取用户的粉丝列表(最多返回5000条数据)。
+     * 获取用户的粉丝列表(最多返回5000条数据)。（新浪微博官方api做出限制，魔人最多只能返回该用户总粉丝的30%）
      * 
      * @param screen_name   需要查询的用户昵称
      * @param count         单页返回的记录条数，默认为50，最大不超过200
@@ -176,7 +176,7 @@ public class FriendshipsAPI extends AbsOpenAPI {
     }
 
     /**
-     * 获取用户粉丝的用户UID列表。
+     * 获取用户粉丝的用户UID列表。（新浪微博官方api做出限制，魔人最多只能返回该用户总粉丝的30%）
      * 
      * @param uid       需要查询的用户UID
      * @param count     单页返回的记录条数，默认为500，最大不超过5000

@@ -1,9 +1,17 @@
 package com.study.radasm.go.Utils;
 
+import android.os.Environment;
 import android.util.Log;
 
 import com.android.volley.VolleyLog;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -21,6 +29,10 @@ public class LogUtils {
     private static final int LEVEL_DEBUG = 1;
     private static final int LEVEL_INFO = 3;
     private static final int LEVEL_ERROR = 5;
+
+
+    /**默认存放日志log文件的地方*/
+    public static final String basePath= Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+"GO";
 
     /**
      * ues to init log_level and other attrs;
@@ -68,7 +80,7 @@ public class LogUtils {
 
     public static void i(String tag, String format, Object... args) {
         if(is_info){
-            Log.i(tag,buildMessage(format,args));
+            Log.i(tag, buildMessage(format, args));
         }
     }
 
@@ -107,4 +119,77 @@ public class LogUtils {
                 Thread.currentThread().getId(), caller, msg);
     }
 
+    /**
+     * 将日志信息存储起来,按照日期的格式存储起来
+     * @param s
+     */
+    public static void keep(final String s) {
+
+        new Thread(){
+            @Override
+            public void run() {
+                String currrent = formatCurrent();
+
+                Log.e("basePath",basePath);
+                File file = new File(basePath);
+                if(!file.exists()){
+                    file.mkdirs();
+                }
+                File dirFile=new File(file,currrent+".log");
+                BufferedWriter writer = null;
+                try {
+                    writer = new BufferedWriter(new FileWriter(dirFile));
+                    writer.write(s);
+                    writer.flush();
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }finally {
+                    if(writer!=null){
+                        try {
+                            writer.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }.start();
+
+
+
+    }
+
+    /**
+     * 格式化当前的日期
+     * @return
+     */
+    private static String formatCurrent() {
+        Date time = Calendar.getInstance().getTime();
+        String hmmss = DateTimeUtils.data2String(time, "yyyy-MM-dd-HH-mm-sss");
+        return hmmss;
+    }
+
+    /**
+     * 删除文件
+     */
+    public static void delete() {
+        new Thread(){
+            @Override
+            public void run() {
+                File file = new File(basePath);
+                if(file.exists()){
+                    File[] files = file.listFiles();
+                    if(files.length!=0){
+                        for(File f:files){
+                            f.delete();
+                        }
+                    }
+                }
+            }
+        }.start();
+
+    }
 }

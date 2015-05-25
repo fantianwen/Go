@@ -10,6 +10,7 @@ import com.study.radasm.go.Sina.openapi.UsersAPI;
  * Created by RadAsm on 15/5/18.
  */
 public class WeiboUser {
+    public static final String FAN_UIDS = "fansUids";
 
 
     /**
