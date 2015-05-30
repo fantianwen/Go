@@ -38,6 +38,8 @@
     <color name="user_des_color">#77000000</color>
 
 
+    <!-- actiivty切换的动画效果 -->
+    
     <style name="Anim_scale" parent="AppTheme">
         <item name="android:windowAnimationStyle">@style/scale</item>
     </style>
@@ -60,6 +62,8 @@
         <item name="android:activityCloseEnterAnimation">@anim/scale_large</item>
         <item name="android:activityCloseExitAnimation">@anim/translate_right</item>
     </style>
+
+    <!-- actiivty切换的动画效果 -->
 
 
 </resources>
