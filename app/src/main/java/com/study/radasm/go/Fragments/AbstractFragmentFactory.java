@@ -5,5 +5,5 @@ package com.study.radasm.go.Fragments;
  */
 public interface AbstractFragmentFactory {
 
-    public BaseFragment createFragment(int position);
+    BaseFragment createFragment(int position);
 }

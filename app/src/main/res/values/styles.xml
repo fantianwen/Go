@@ -36,4 +36,30 @@
 
     <color name="light_orange">#66EE5500</color>
     <color name="user_des_color">#77000000</color>
+
+
+    <style name="Anim_scale" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@style/scale</item>
+    </style>
+
+    <style name="scale" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/translate_left</item>
+        <item name="android:activityOpenExitAnimation">@anim/scale_short</item>
+        <item name="android:activityCloseEnterAnimation">@anim/scale_large</item>
+        <item name="android:activityCloseExitAnimation">@anim/translate_right</item>
+    </style>
+
+
+    <style name="Anim_translate" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@style/translate</item>
+    </style>
+
+    <style name="translate" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/translate_left</item>
+        <item name="android:activityOpenExitAnimation">@anim/scale_short</item>
+        <item name="android:activityCloseEnterAnimation">@anim/scale_large</item>
+        <item name="android:activityCloseExitAnimation">@anim/translate_right</item>
+    </style>
+
+
 </resources>

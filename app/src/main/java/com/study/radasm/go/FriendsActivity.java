@@ -1,13 +1,18 @@
 package com.study.radasm.go;
 
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
@@ -35,6 +40,7 @@ public class FriendsActivity extends ActionBarActivity {
     private FriendsRecycleAdapter friendsRecycleAdapter;
     private SharedPrefrenceUtils spUtils;
     private LinearLayoutManager layoutManager;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,31 +58,30 @@ public class FriendsActivity extends ActionBarActivity {
 
         layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        rv_myFriends= (RecyclerView) findViewById(R.id.rv_myFriends);
+        rv_myFriends = (RecyclerView) findViewById(R.id.rv_myFriends);
         rv_myFriends.setHasFixedSize(true);
         rv_myFriends.setLayoutManager(layoutManager);
 
-        spUtils=new SharedPrefrenceUtils(this, Constants.CONFIG);
-        fromWhere= spUtils.getInt(Constants.FROM_WHERE);
-        switch (fromWhere){
+        spUtils = new SharedPrefrenceUtils(this, Constants.CONFIG);
+        fromWhere = spUtils.getInt(Constants.FROM_WHERE);
+        switch (fromWhere) {
             case Constants.FROM_WEIBO:
                 //使用微博登陆
                 Bundle bundle = getIntent().getBundleExtra(Constants.BUNDLE);
-                String ss= bundle.getString(Constants.FANS);
-                if(ss==null){
-                    Log.e(TAG,null);
-                }else{
-                    Log.e(TAG,ss);
+                String ss = bundle.getString(Constants.FANS);
+                if (ss == null) {
+                    Log.e(TAG, null);
+                } else {
+                    Log.e(TAG, ss);
                     LogUtils.delete();
                     LogUtils.keep(ss);
                 }
                 Fans fans1 = new Gson().fromJson(ss, Fans.class);
-                Log.e(TAG,fans1.toString());
+                Log.e(TAG, fans1.toString());
 
-                friendsLists=fans1.users;
+                friendsLists = fans1.users;
 
                 Log.e(TAG + "hehe", friendsLists.get(0).profile_image_url);
-
 
 
                 friendsRecycleAdapter = new FriendsRecycleAdapter(FriendsActivity.this, friendsLists);
@@ -106,6 +111,29 @@ public class FriendsActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_friends, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(FriendsActivity.this, "开始搜索", Toast.LENGTH_SHORT).show();
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+                        | WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+            }
+        });
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                boolean isClosed = false;
+
+
+                return isClosed;
+            }
+        });
+
         return true;
     }
 

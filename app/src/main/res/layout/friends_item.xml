@@ -9,8 +9,8 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/userImage"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         fresco:placeholderImage="@mipmap/ic_launcher" />
 
     <TextView
@@ -23,8 +23,8 @@
         android:layout_toRightOf="@+id/userImage"
         android:singleLine="true"
         android:text="username"
-        android:textColor="@android:color/background_dark"
-        android:textSize="40sp" />
+        android:textColor="@android:color/holo_orange_light"
+        android:textSize="20sp" />
 
 
     <TextView
@@ -34,11 +34,11 @@
         android:layout_alignBottom="@+id/userImage"
         android:layout_alignLeft="@+id/username"
         android:layout_alignStart="@+id/username"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:singleLine="true"
         android:text="user_des"
         android:textColor="@color/user_des_color"
-        android:textSize="20sp" />
+        android:textSize="11sp" />
 
     <View
         android:layout_width="match_parent"
